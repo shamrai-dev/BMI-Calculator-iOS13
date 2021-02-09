@@ -25,20 +25,22 @@ class CalculateViewController: UIViewController {
     }
 
     @IBAction func sliderHeightChanged(_ sender: UISlider) {
-        labelHeight.text = calcBrain.setHeight(sender.value)
+        labelHeight.text = String(format: "%.2fm", sender.value)
     }
     @IBAction func sliderWeightChanged(_ sender: UISlider) {
-        labelWeight.text = calcBrain.setWeight(sender.value)
+        labelWeight.text = String(format: "%.1fKg", sender.value)
     }
     @IBAction func calculatePressed(_ sender: UIButton) {
-        calcBrain.getBmi()
+        calcBrain.calculateBmi(height: sliderHeight.value, weight: sliderWeight.value)
         self.performSegue(withIdentifier: "goToResults", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResults" {
             let destinationVC = segue.destination as! ResultsViewController
-            destinationVC.bmiValue = calcBrain.getBmi()
+            destinationVC.bmiValue = calcBrain.getBMIvalue()
+            destinationVC.advice = calcBrain.getAdvice()
+            destinationVC.color = calcBrain.getColor()
         }
     }
 }
